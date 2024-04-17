@@ -307,7 +307,10 @@ public class EddystoneModule extends ReactContextBaseJavaModule {
 
     // start scanning
     scanner = bluetoothAdapter.getBluetoothLeScanner();
-    scanner.startScan(filters, settings, scanCallback);
+    scanner = bluetoothAdapter.getBluetoothLeScanner();
+    if(scanner!=null){
+      scanner.startScan(filters, settings, scanCallback);
+    }
   }
 
   /**
@@ -317,8 +320,11 @@ public class EddystoneModule extends ReactContextBaseJavaModule {
    * @public
    */
   @ReactMethod
-  public void stopScanning() {
-    scanner.stopScan(scanCallback);
-    scanner = null;
+     public void stopScanning() {
+         if(scanner!=null){
+              scanner.stopScan(scanCallback);
+            }
+         scanner = null;
   }
+
 }
