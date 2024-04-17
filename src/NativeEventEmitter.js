@@ -2,6 +2,7 @@
  * React Native Eddystone
  *
  * A simple Eddystone implementation in React Native for both iOS and Android.
+ * Changed by JaioSkura
  *
  * @package    @lg2/react-native-eddystone
  * @link       https://github.com/lg2/react-native-eddystone
@@ -15,11 +16,7 @@ const { Eddystone } = NativeModules;
 const EddystoneEventEmitter = new NativeEventEmitter(Eddystone);
 
 const addListener = EddystoneEventEmitter.addListener.bind(
-  EddystoneEventEmitter
-);
+EddystoneEventEmitter);
 
-const removeListener = EddystoneEventEmitter.removeListener.bind(
-  EddystoneEventEmitter
-);
+export { addListener};
 
-export { addListener, removeListener };
