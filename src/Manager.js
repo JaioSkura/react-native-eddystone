@@ -10,7 +10,7 @@
  */
 
 import Beacon from "./Beacon";
-import EventEmitter from "eventemitter3";
+import EventEmitter from "react-native/Libraries/vendor/emitter/EventEmitter";
 import { startScanning, stopScanning } from "./NativeModule";
 import { addListener, removeListener } from "./NativeEventEmitter";
 
