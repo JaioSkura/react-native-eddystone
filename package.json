@@ -1,23 +1,35 @@
 {
   "name": "@lg2/react-native-eddystone",
-  "version": "0.1.5",
-  "description": "A simple Eddystone implementation in React Native for both iOS and Android.",
-  "main": "src/index.js",
-  "directories": {
-    "example": "examples"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/lg2/react-native-eddystone.git"
-  },
-  "keywords": ["react", "native", "eddystone"],
-  "author": "Nicholas Charbonneau <nicholas.charbonneau@lg2.com>",
+  "version": "0.0.2",
+  "description": "Showcase Turbomodule with backward compatibility",
+  "react-native": "src/index",
+  "source": "src/index",
+  "files": [
+    "src",
+    "android",
+    "ios",
+    "RNEddystoneManager.podspec",
+    "!android/build",
+    "!ios/build",
+    "!**/__tests__",
+    "!**/__fixtures__",
+    "!**/__mocks__"
+  ],
+  "keywords": [
+    "react-native",
+    "ios",
+    "android"
+  ],
+  "repository": "https://github.com/JaioSkura/react-native-eddystone",
+  "author": "<Your Name> <your_email@your_provider.com> (https://github.com/<your_github_handle>)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/lg2/react-native-eddystone/issues"
+    "url": "https://github.com/JaioSkura/react-native-eddystone/issues"
   },
-  "homepage": "https://github.com/lg2/react-native-eddystone#readme"
+  "homepage": "https://github.com/JaioSkura/react-native-eddystone#readme",
+  "devDependencies": {},
+  "peerDependencies": {
+    "react": "*",
+    "react-native": "*"
+  }
 }

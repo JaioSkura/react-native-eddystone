@@ -28,12 +28,26 @@
 @end
 
 @implementation Eddystone
+{
+  bool hasListeners;
+}
   // react-native module macro
   RCT_EXPORT_MODULE()
 
+// Will be called when this module's first listener is added.
+-(void)startObserving {
+    hasListeners = YES;
+    // Set up any upstream listeners or background tasks as necessary
+}
+
+// Will be called when this module's last listener is removed, or on dealloc.
+-(void)stopObserving {
+    hasListeners = NO;
+    // Remove upstream listeners, stop unnecessary background tasks
+}
   // react native methods
   + (BOOL)requiresMainQueueSetup { return NO; }
-  - (dispatch_queue_t)methodQueue { return dispatch_get_main_queue(); }
+ // - (dispatch_queue_t)methodQueue { return dispatch_get_main_queue(); }
 
   /**
    * Eddystone class initializer
@@ -100,68 +114,70 @@
    didDiscoverPeripheral:(CBPeripheral *)peripheral
        advertisementData:(NSDictionary *)advertisementData
                     RSSI:(NSNumber *)RSSI {
-    // retrieve the beacon data from the advertised data
-    NSDictionary *serviceData = advertisementData[CBAdvertisementDataServiceDataKey];
-
-    // retrieve the frame type
-    FrameType frameType = [Beacon getFrameType:serviceData];
-    
-    // handle basic beacon broadcasts
-    if (frameType == FrameTypeUID || frameType == FrameTypeEID) {
-      // create our beacon object based on the frame type
-      Beacon *beacon;
-      NSString *eventName;
-      if (frameType == FrameTypeUID) {
-        eventName = @"onUIDFrame";
-        beacon = [Beacon initWithUIDFrameType:serviceData rssi:RSSI];
-      } else if(frameType == FrameTypeEID) {
-        eventName = @"onEIDFrame";
-        beacon = [Beacon initWithEIDFrameType:serviceData rssi:RSSI];
-      }
-
-      // dispatch device event with beacon information
-      [self sendEventWithName:eventName
-                         body:@{
-                                @"id": [NSString stringWithFormat:@"%@", beacon.id],
-                                @"uid": [peripheral.identifier UUIDString],
-                                @"txPower": beacon.txPower,
-                                @"rssi": beacon.rssi
-                                }];
-    } else if(frameType == FrameTypeURL) {
-      // retrive the URL from the beacon broadcast & dispatch
-      NSURL *url = [Beacon getUrl:serviceData];
-      [self sendEventWithName:@"onURLFrame" body:@{
-                                                  @"uid": [peripheral.identifier UUIDString],
-                                                   @"url": url.absoluteString
-                                                   }];
-    } else if (frameType == FrameTypeTelemetry) {
-      // retrieve the beacon data
-      NSData *beaconData = [Beacon getData:serviceData];
-      uint8_t *bytes = (uint8_t *)[beaconData bytes];
-      
-      // attempt to match a frame type
-      if (beaconData) {
-        if ([beaconData length] > 1) {
-          int voltage = (bytes[2] & 0xFF) << 8;
-          voltage += (bytes[3] & 0xFF);
-
-          int temp = (bytes[4] << 8);
-          temp += (bytes[5] & 0xFF);
-          temp /= 256.f;
+      if(hasListeners){
+          // retrieve the beacon data from the advertised data
+          NSDictionary *serviceData = advertisementData[CBAdvertisementDataServiceDataKey];
           
-          // dispatch telemetry information
-          [self sendEventWithName:@"onTelemetryFrame" body:@{
-                                                             @"uid": [peripheral.identifier UUIDString],
-                                                             @"voltage": [NSNumber numberWithInt: voltage],
-                                                             @"temp": [NSNumber numberWithInt: temp]
-                                                             }];
-        }
+          // retrieve the frame type
+          FrameType frameType = [Beacon getFrameType:serviceData];
+          
+          // handle basic beacon broadcasts
+          if (frameType == FrameTypeUID || frameType == FrameTypeEID) {
+              // create our beacon object based on the frame type
+              Beacon *beacon;
+              NSString *eventName;
+              if (frameType == FrameTypeUID) {
+                  eventName = @"onUIDFrame";
+                  beacon = [Beacon initWithUIDFrameType:serviceData rssi:RSSI];
+              } else if(frameType == FrameTypeEID) {
+                  eventName = @"onEIDFrame";
+                  beacon = [Beacon initWithEIDFrameType:serviceData rssi:RSSI];
+              }
+              
+              // dispatch device event with beacon information
+              [self sendEventWithName:eventName
+                                 body:@{
+                @"id": [NSString stringWithFormat:@"%@", beacon.id],
+                @"uid": [peripheral.identifier UUIDString],
+                @"txPower": beacon.txPower,
+                @"rssi": beacon.rssi
+              }];
+          } else if(frameType == FrameTypeURL) {
+              // retrive the URL from the beacon broadcast & dispatch
+              NSURL *url = [Beacon getUrl:serviceData];
+              [self sendEventWithName:@"onURLFrame" body:@{
+                @"uid": [peripheral.identifier UUIDString],
+                @"url": url.absoluteString
+              }];
+          } else if (frameType == FrameTypeTelemetry) {
+              // retrieve the beacon data
+              NSData *beaconData = [Beacon getData:serviceData];
+              uint8_t *bytes = (uint8_t *)[beaconData bytes];
+              
+              // attempt to match a frame type
+              if (beaconData) {
+                  if ([beaconData length] > 1) {
+                      int voltage = (bytes[2] & 0xFF) << 8;
+                      voltage += (bytes[3] & 0xFF);
+                      
+                      int temp = (bytes[4] << 8);
+                      temp += (bytes[5] & 0xFF);
+                      temp /= 256.f;
+                      
+                      // dispatch telemetry information
+                      [self sendEventWithName:@"onTelemetryFrame" body:@{
+                        @"uid": [peripheral.identifier UUIDString],
+                        @"voltage": [NSNumber numberWithInt: voltage],
+                        @"temp": [NSNumber numberWithInt: temp]
+                      }];
+                  }
+              }
+              
+          } else if (frameType == FrameTypeEmpty){
+              // dispatch empty frame
+              [self sendEventWithName:@"onEmptyFrame" body:nil];
+          }
       }
-
-    } else if (frameType == FrameTypeEmpty){
-      // dispatch empty frame
-      [self sendEventWithName:@"onEmptyFrame" body:nil];
-    }
   }
 
   /**
@@ -171,26 +187,26 @@
    */
   - (void)centralManagerDidUpdateState:(nonnull CBCentralManager *)manager {
     switch(manager.state) {
-      case CBCentralManagerStatePoweredOn:
-        [self sendEventWithName:@"onStateChanged" body:@"on"];
+        case CBManagerStatePoweredOn:
+            [self sendEventWithName:@"onStateChanged" body:@"on"];
         if(_shouldBeScanning) {
           [self startScanning];
         }
         break;
         
-      case CBCentralManagerStatePoweredOff:
+        case CBManagerStatePoweredOff:
         [self sendEventWithName:@"onStateChanged" body:@"off"];
         break;
         
-      case CBCentralManagerStateResetting:
+        case CBManagerStateResetting:
         [self sendEventWithName:@"onStateChanged" body:@"resetting"];
         break;
         
-      case CBCentralManagerStateUnsupported:
+        case CBManagerStateUnsupported:
         [self sendEventWithName:@"onStateChanged" body:@"unsupported"];
         break;
         
-      case CBCentralManagerStateUnauthorized:
+        case CBManagerStateUnauthorized:
         [self sendEventWithName:@"onStateChanged" body:@"unauthorized"];
         break;
         
