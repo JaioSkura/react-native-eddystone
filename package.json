@@ -1,6 +1,6 @@
 {
   "name": "@lg2/react-native-eddystone",
-  "version": "0.0.2",
+  "version": "2.0",
   "description": "Showcase Turbomodule with backward compatibility",
   "react-native": "src/index",
   "source": "src/index",
