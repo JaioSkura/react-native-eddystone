@@ -81,7 +81,7 @@
    * Exported method that starts scanning for eddystone devices
    * @return void
    */
-  RCT_EXPORT_METHOD(startScanning) {
+  RCT_REMAP_METHOD(startScanning) {
     dispatch_async(_beaconOperationsQueue, ^{
       if (_centralManager.state != CBCentralManagerStatePoweredOn) {
         _shouldBeScanning = YES;
@@ -97,7 +97,7 @@
    * Exported method that stops scanning for eddystone devices
    * @return void
    */
-  RCT_EXPORT_METHOD(stopScanning) {
+  RCT_REMAP_METHOD(stopScanning) {
     _shouldBeScanning = NO;
     [_centralManager stopScan];
   }
@@ -214,4 +214,11 @@
         [self sendEventWithName:@"onStateChanged" body:@"unknown"];
     }
   }
+  #ifdef RCT_NEW_ARCH_ENABLED
+- (std::shared_ptr<facebook::react::TurboModule>)getTurboModule:
+    (const facebook::react::ObjCTurboModule::InitParams &)params
+{
+    return std::make_shared<facebook::react::NativeCalculatorSpecJSI>(params);
+}
+#endif
 @end
