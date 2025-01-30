@@ -32,7 +32,7 @@
   bool hasListeners;
 }
   // react-native module macro
-  RCT_EXPORT_MODULE()
+  RCT_EXPORT_MODULE(Eddystone)
 
 // Will be called when this module's first listener is added.
 -(void)startObserving {
