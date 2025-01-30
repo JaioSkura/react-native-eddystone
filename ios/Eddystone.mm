@@ -13,6 +13,10 @@
 #import "Eddystone.h"
 #import "Beacon.h"
 
+#ifdef RCT_NEW_ARCH_ENABLED
+#import "Eddystone.h"
+#endif
+
 // declare our module interface & implement it as a central manager delegate
 @interface Eddystone () <CBCentralManagerDelegate> {
 @private
@@ -218,7 +222,7 @@
 - (std::shared_ptr<facebook::react::TurboModule>)getTurboModule:
     (const facebook::react::ObjCTurboModule::InitParams &)params
 {
-    return std::make_shared<facebook::react::NativeCalculatorSpecJSI>(params);
+    return std::make_shared<facebook::react::NativeEddystoneSpecJSI>(params);
 }
 #endif
 @end
