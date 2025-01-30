@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2E8A60DD2D4C2E8F0030404B /* EddystoneModule.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2E8A60DB2D4C2E8F0030404B /* EddystoneModule.mm */; };
 		2E9B3B3E21ED254800D52F4E /* Beacon.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E9B3B3B21ED254800D52F4E /* Beacon.m */; };
 		B3E7B58A1CC2AC0600A0062D /* Eddystone.m in Sources */ = {isa = PBXBuildFile; fileRef = B3E7B5891CC2AC0600A0062D /* Eddystone.m */; };
 /* End PBXBuildFile section */
@@ -25,6 +26,9 @@
 
 /* Begin PBXFileReference section */
 		134814201AA4EA6300B7C361 /* libEddystone.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libEddystone.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		2E8A60DA2D4C2E8F0030404B /* EddystoneModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EddystoneModule.h; sourceTree = "<group>"; };
+		2E8A60DB2D4C2E8F0030404B /* EddystoneModule.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EddystoneModule.mm; sourceTree = "<group>"; };
+		2E8A60DC2D4C2E8F0030404B /* EddystoneModule-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "EddystoneModule-Bridging-Header.h"; sourceTree = "<group>"; };
 		2E9B3B3B21ED254800D52F4E /* Beacon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Beacon.m; sourceTree = "<group>"; };
 		2E9B3B3D21ED254800D52F4E /* Beacon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Beacon.h; sourceTree = "<group>"; };
 		B3E7B5881CC2AC0600A0062D /* Eddystone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Eddystone.h; sourceTree = "<group>"; };
@@ -53,6 +57,9 @@
 		58B511D21A9E6C8500147676 = {
 			isa = PBXGroup;
 			children = (
+				2E8A60DA2D4C2E8F0030404B /* EddystoneModule.h */,
+				2E8A60DB2D4C2E8F0030404B /* EddystoneModule.mm */,
+				2E8A60DC2D4C2E8F0030404B /* EddystoneModule-Bridging-Header.h */,
 				2E9B3B3D21ED254800D52F4E /* Beacon.h */,
 				2E9B3B3B21ED254800D52F4E /* Beacon.m */,
 				B3E7B5881CC2AC0600A0062D /* Eddystone.h */,
@@ -100,6 +107,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 			);
 			mainGroup = 58B511D21A9E6C8500147676;
@@ -119,6 +127,7 @@
 			files = (
 				B3E7B58A1CC2AC0600A0062D /* Eddystone.m in Sources */,
 				2E9B3B3E21ED254800D52F4E /* Beacon.m in Sources */,
+				2E8A60DD2D4C2E8F0030404B /* EddystoneModule.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

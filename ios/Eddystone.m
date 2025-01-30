@@ -24,6 +24,8 @@
   
   // our beacon dispatch queue
   dispatch_queue_t _beaconOperationsQueue;
+
+  EddystoneModule _eddystoneModule;
 }
 @end
 
@@ -32,7 +34,6 @@
   bool hasListeners;
 }
   // react-native module macro
-  RCT_EXPORT_MODULE(Eddystone)
 
 // Will be called when this module's first listener is added.
 -(void)startObserving {
@@ -53,14 +54,17 @@
    * Eddystone class initializer
    * @return instancetype
    */
-  - (instancetype)init {
+- (instancetype)init() {
     if ((self = [super init]) != nil) {
       _beaconOperationsQueue = dispatch_queue_create("EddystoneBeaconOperationsQueue", NULL);
       _centralManager = [[CBCentralManager alloc] initWithDelegate:self queue:_beaconOperationsQueue];
+        _eddystone =[Eddystone init];
     }
 
     return self;
   }
+
+
 
   /**
    * Lists the supported events for the RCTEventEmitter
@@ -81,7 +85,7 @@
    * Exported method that starts scanning for eddystone devices
    * @return void
    */
-  RCT_REMAP_METHOD(startScanning) {
+  -(void)startScanning{
     dispatch_async(_beaconOperationsQueue, ^{
       if (_centralManager.state != CBCentralManagerStatePoweredOn) {
         _shouldBeScanning = YES;
@@ -97,7 +101,7 @@
    * Exported method that stops scanning for eddystone devices
    * @return void
    */
-  RCT_REMAP_METHOD(stopScanning) {
+  -(void)stopScanning {
     _shouldBeScanning = NO;
     [_centralManager stopScan];
   }
@@ -133,15 +137,21 @@
                   eventName = @"onEIDFrame";
                   beacon = [Beacon initWithEIDFrameType:serviceData rssi:RSSI];
               }
-              
-              // dispatch device event with beacon information
-              [self sendEventWithName:eventName
-                                 body:@{
-                @"id": [NSString stringWithFormat:@"%@", beacon.id],
-                @"uid": [peripheral.identifier UUIDString],
-                @"txPower": beacon.txPower,
-                @"rssi": beacon.rssi
-              }];
+              //dispatch device event with beacon information
+                          [_eddystone emitOnUIDFrame:@{
+                          @"id": [NSString stringWithFormat:@"%@", beacon.id],
+                            @"uid": [peripheral.identifier UUIDString],
+                           @"txPower": beacon.txPower,
+                            @"rssi": beacon.rssi
+                          }];
+//               dispatch device event with beacon information
+//              [self sendEventWithName:eventName
+//                                 body:@{
+//                @"id": [NSString stringWithFormat:@"%@", beacon.id],
+//                @"uid": [peripheral.identifier UUIDString],
+//                @"txPower": beacon.txPower,
+//                @"rssi": beacon.rssi
+//              }];
           } else if(frameType == FrameTypeURL) {
               // retrive the URL from the beacon broadcast & dispatch
               NSURL *url = [Beacon getUrl:serviceData];
