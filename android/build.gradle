@@ -45,6 +45,6 @@ dependencies {
      react {
         jsRootDir = file("../src/")
         libraryName = "RNEddystoneModule"
-       codegenJavaPackageName = "com.lg2.eddystone"
+       codegenJavaPackageName = "com.eddystone"
      }
  }
