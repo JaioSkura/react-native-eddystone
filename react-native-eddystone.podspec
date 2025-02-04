@@ -3,7 +3,7 @@ require "json"
 package = JSON.parse(File.read(File.join(__dir__, "package.json")))
 
 Pod::Spec.new do |s|
-  s.name            = "RNEddystoneManager"
+  s.name            = "react-native-eddystone"
   s.version         = package["version"]
   s.summary         = package["description"]
   s.description     = package["description"]
@@ -13,7 +13,11 @@ Pod::Spec.new do |s|
   s.author          = package["author"]
   s.source          = { :git => package["repository"], :tag => "#{s.version}" }
 
-  s.source_files    = "ios/**/*.{h,m,mm,swift}"
+  s.compiler_flags = '-x objective-c++'
 
+  s.source_files = [
+    "ios/**/*.{h,m,mm}",
+    "cpp/**/*.{hpp,cpp,c,h}",
+  ]
   s.dependency "React-Core"
 end
