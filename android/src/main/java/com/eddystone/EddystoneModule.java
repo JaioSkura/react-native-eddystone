@@ -1,4 +1,4 @@
-package com.lg2.eddystone;
+package com.eddystone;
 
 import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
