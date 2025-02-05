@@ -33,12 +33,9 @@
     "react-native": "*"
   },
   "codegenConfig": {
-    "libraries": [
-      {
         "name": "EddystoneModuleSpec",
         "type": "modules",
         "jsSrcsDir": "src"
-      }
     ]
   }
 }
