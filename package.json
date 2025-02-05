@@ -8,7 +8,7 @@
     "src",
     "android",
     "ios",
-    "RNEddystoneManager.podspec",
+    "RNEddystoneModule.podspec",
     "!android/build",
     "!ios/build",
     "!**/__tests__",
