@@ -8,7 +8,7 @@
     "src",
     "android",
     "ios",
-    "react-native-eddystone.podspec",
+    "RNEddystoneModule.podspec",
     "!android/build",
     "!ios/build",
     "!**/__tests__",
@@ -33,12 +33,8 @@
     "react-native": "*"
   },
   "codegenConfig": {
-    "libraries": [
-      {
         "name": "EddystoneModuleSpec",
         "type": "modules",
         "jsSrcsDir": "src"
-      }
-    ]
   }
 }
