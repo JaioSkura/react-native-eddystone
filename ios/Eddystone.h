@@ -14,4 +14,12 @@
 
 @interface Eddystone : NSObject <RCTBridgeModule>
 
+- (instancetype)init;
+
+- (void)startScanning;
+- (void)stopScanning;
+
+- (void)setName:(NSString*)value;
+
+
 @end

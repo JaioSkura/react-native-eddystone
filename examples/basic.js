@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { View } from "react-native";
 import Eddystone from "@lg2/react-native-eddystone";
-
+//THIS SHOULD BE UPDATED:..
 export default class App extends Component {
   componentDidMount() {
     // bind eddystone events

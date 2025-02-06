@@ -1,6 +1,10 @@
 #import "EddystoneModule.h"
 #import "Eddystone.h"
 
+#ifdef RCT_NEW_ARCH_ENABLED
+#import "EddystoneModuleSpec.h"
+#endif
+
 @implementation SpecChecker  
 
 + (BOOL)isSpecAvailable {
@@ -13,14 +17,14 @@
 
 @end
 
-@implementation EddystoneModule   {
+@implementation EddystoneModule     {
     Eddystone *_eddystone;
 }
 
 - (instancetype)init {
     self = [super init];
     if (self) {
-        _eddystone = [[Eddystone alloc] init:self];
+        _eddystone = [[Eddystone alloc] init];
     }
     return self;
 }
@@ -31,23 +35,27 @@
 
 RCT_EXPORT_MODULE()
 
+#ifdef RCT_NEW_ARCH_ENABLED
 - (std::shared_ptr<facebook::react::TurboModule>)getTurboModule:
     (const facebook::react::ObjCTurboModule::InitParams &)params {
     return std::make_shared<facebook::react::NativeEddystoneSpecJSI>(params);
 }
+#endif
 
-- (void)startScanning:() {
+- (void)startScanning {
     [_eddystone startScanning];
 }
 
 
-- (void)stopScannig:() {
-    [_eddystone stopScannig];
+- (void)stopScannig {
+    [_eddystone stopScanning];
 }
 
 
 - (void)setName:(NSString *)name {
     [_eddystone setName:name];
 }
+
+
 
 @end
