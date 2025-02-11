@@ -6,17 +6,6 @@
 #import "EddystoneModuleSpec.h"
 #endif
 
-@implementation SpecChecker  
-
-+ (BOOL)isSpecAvailable {
-#ifdef RCT_NEW_ARCH_ENABLED
-    return YES;
-#else
-    return NO;
-#endif
-}
-
-@end
 
 @interface EddystoneModule () <CBCentralManagerDelegate> {
 @private
